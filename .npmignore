@@ -1,0 +1,4 @@
+.gitmodules
+.npmignore
+highlight.js\**
+!highlight.js\src\**

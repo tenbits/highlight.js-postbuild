@@ -1,0 +1,7 @@
+{
+	"name": "highlight.js-postbuild",
+	"version": "0.0.2",
+	"scripts": {
+		"postinstall": "node tools/customize"
+	}
+}
