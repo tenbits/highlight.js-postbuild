@@ -174,8 +174,9 @@ var Fs;
 			});
 		},
 		copyFile (path, target) {
-			var stream = fs.createReadStream(path);
-			fs.writeFileSync(target, stream);
+			var reader = fs.createReadStream(path);
+			var writer = fs.createWriteStream(target);
+			reader.pipe(writer);
 		}
 	}
 }());
