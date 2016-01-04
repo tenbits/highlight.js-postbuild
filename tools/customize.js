@@ -1,9 +1,11 @@
+var Fs = require('./helpers/Fs');
+var Path = require('./helpers/Path');
 var Settings;
 (function(){
 	Settings = {
 		resolve (){
 			var settings = {
-				cwd: __dirname.replace(rgx_cdUp, '')
+				cwd: Path.CWD
 			};			
 			var paths = getPackages(settings.cwd);
 			while (paths.length) {
@@ -28,7 +30,8 @@ var Settings;
 		var arr = [];
 		while (1) {
 			arr.push(directory + '/package.json');
-			var next = directory.replace(rgx_cdUp, '');
+			arr.push(directory + '/bower.json');
+			var next = Path.cdUp(directory, '..');
 			if (next === directory) 
 				break;
 
@@ -36,13 +39,12 @@ var Settings;
 		}		
 		return arr;
 	}
-	var rgx_cdUp = /[\/\\][^\/\\]+$/; 
 }());
 
 var Builder;
 (function(){
 	var CWD = '',
-		SOURCE = 'highlight.js/src';
+		SOURCE = 'src';
 
 	Builder = {
 		build (settings){
@@ -145,41 +147,4 @@ var Builder;
 	
 }());
 
-var Fs;
-(function(){
-	var fs = require('fs');
-	Fs = {
-		exists (path){
-			try {
-				fs.accessSync(path, fs.R_OK);
-				return true;
-			}
-			catch(error) {
-				return false;
-			}
-		},
-		read (path){
-			return fs.readFileSync(path, 'utf8');
-		},
-		write (path, content){
-			fs.writeFileSync(path, content);
-		},
-		copyDir (path, target){
-			if (Fs.exists(target) === false) {
-				fs.mkdirSync(target);
-			}
-			var files = fs.readdirSync(path);
-			files.forEach(name => {
-				this.copyFile(`${path}/${name}`, `${target}/${name}`);
-			});
-		},
-		copyFile (path, target) {
-			var reader = fs.createReadStream(path);
-			var writer = fs.createWriteStream(target);
-			reader.pipe(writer);
-		}
-	}
-}());
-
-var settings = Settings.resolve();
-Builder.build(settings);
+Builder.build(Settings.resolve());
