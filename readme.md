@@ -27,3 +27,9 @@ The `highlight.js` package will be created on postinstall with languages you spe
 }
 > ```
 
+## Licenses
+
+1. The underlying library (`highlight.js`) is statically linked into the library and the full text of the license can be found [here](./LICENSE). Any furher usage and distribution of this package should be done with respect to the underlying library license. 
+
+
+2. The build script is licensed under the [CC0](https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt) license.
